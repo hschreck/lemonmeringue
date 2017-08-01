@@ -1,18 +1,15 @@
-import json
 import subprocess
-import time
 
 
-class request:
-    def __init__(self, request_json):
-        request = json.loads(request_json)
+class requestObject:
+    def __init__(self, requestDict):
         self.request = {}
-        if 'ignore_output' in request and request['ignore_output'] is True:
+        if 'ignore_output' in requestDict and requestDict['ignore_output'] is True:
             self.ignore_output = True
-            del request['ignore_output']
+            del requestDict['ignore_output']
         else:
             self.ignore_output = False
-        for key, value in request.items():
+        for key, value in requestDict.items():
             self.request[key] = value
 
 
@@ -25,12 +22,11 @@ class request:
 
     def acknowledge(self):
         self.set_status('ack')
-        self.send()
         print("Order Acknowledged!")
 
     def send(self):
         print("Sending...")
-        print(json.dumps(self.request))
+        return self.request
 
     def process(self):
         self.set_status('processing')
