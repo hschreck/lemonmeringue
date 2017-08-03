@@ -43,3 +43,5 @@ class Component(ApplicationSession):
 if __name__ == '__main__':
     runner = ApplicationRunner(url=u"ws://localhost:8080/ws", realm=u"realm1")
     runner.run(Component)
+
+

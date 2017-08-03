@@ -1,5 +1,5 @@
 import subprocess
-
+import threading
 
 class requestObject:
     def __init__(self, requestDict={}):
@@ -28,7 +28,8 @@ class requestObject:
     def process(self):
         self.set_status('processing')
         print(f"I'm going to run {self.get_property('command')}")
-        self.run_command(self.get_property('command'))
+        command_thread = threading.Thread(target = self.run_command, args=[self.get_property('command')])
+        command_thread.start()
 
     def result(self):
         self.set_status('result')
@@ -44,7 +45,7 @@ class requestObject:
 
     def run_command(self, command):
         pid = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-
+        pid.wait()
         #TODO: Build actual concurrency
         output = pid.communicate()[0]
         print(output)
